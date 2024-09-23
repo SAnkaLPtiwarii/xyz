@@ -42,9 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(url);
             console.log(`Response status: ${response.status}`);
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error(`Error response text: ${errorText}`);
-                throw new Error(`HTTP error! status: ${response.status}`);
+                let errorMessage = `HTTP error! status: ${response.status}`;
+                try {
+                    const errorBody = await response.text();
+                    console.error(`Error response body:`, errorBody);
+
+                    try {
+                        const errorJson = JSON.parse(errorBody);
+                        errorMessage += ` - ${errorJson.error || errorJson.message || errorBody}`;
+                    } catch (jsonError) {
+                        errorMessage += ` - ${errorBody}`;
+                    }
+                } catch (textError) {
+                    console.error('Failed to read error response:', textError);
+                }
+                throw new Error(errorMessage);
             }
             const content = await response.json();
             console.log('Received content:', content);
@@ -57,6 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             hero.style.display = 'none';
             resultSection.style.display = 'block';
+
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
+
+            // Smooth scroll to results
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+
 
             // Smooth scroll to results
             // resultSection.scrollIntoView({ behavior: 'smooth' });
