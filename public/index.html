@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DynamiSearch - Your Dynamic Service Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">Dynami<span>Search</span></a>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link">Home</a></li>
+                    <li><a href="#" class="nav-link">Services</a></li>
+                    <li><a href="#" class="nav-link">About</a></li>
+                    <li><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="hero">
+            <div class="container">
+                <h1 class="hero-title">Discover Your Perfect Service</h1>
+                <p class="hero-subtitle">Tailored solutions at your fingertips</p>
+                <form id="searchForm" class="search-form">
+                    <input type="text" id="searchInput" class="search-input"
+                        placeholder="e.g., SEO, Web Design, Marketing..." required>
+                    <button type="submit" class="search-button"><i class="fas fa-search"></i> Search</button>
+                </form>
+            </div>
+            <div class="hero-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </section>
+
+        <section id="resultSection" class="result-section" style="display:none;">
+            <div class="container">
+                <h2 id="resultTitle" class="result-title">Your Personalized Solution</h2>
+                <div class="result-content">
+                    <h3 id="subtitle" class="result-subtitle"></h3>
+                    <p id="mainContent" class="result-description"></p>
+                    <a href="#" id="ctaButton" class="cta-button">Get Started</a>
+                </div>
+                <button id="backToSearch" class="back-button"><i class="fas fa-arrow-left"></i> Back to Search</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 DynamiSearch. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="loadingSpinner" class="loading-spinner" style="display:none;">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Request <span id="modalService"></span> Help</h2>
+            <form id="infoForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="4"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add this inside your header, after the nav-links -->
+    <div class="theme-toggle">
+        <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
+        <label for="theme-toggle" class="theme-toggle-label">
+            <span class="theme-toggle-icon"></span>
+        </label>
+    </div>
+
+
+
+    <script src="scripts/dynamic-content.js"></script>
+</body>
+
+</html>
