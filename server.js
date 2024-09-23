@@ -25,12 +25,35 @@ app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => {
-        console.error('MongoDB connection error:', err);
-        process.exit(1);
-    });
+let isConnected = false;
+
+const connectToDatabase = async () => {
+    if (isConnected) {
+        console.log('Using existing database connection');
+        return;
+    }
+
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        isConnected = true;
+        console.log('New database connection established');
+    } catch (error) {
+        console.error('Database connection error:', error);
+        throw error;
+    }
+};
+
+app.use(async (req, res, next) => {
+    try {
+        await connectToDatabase();
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
 // Rate Limiter
 const rateLimiter = new RateLimiterMemory({
     points: 10,
