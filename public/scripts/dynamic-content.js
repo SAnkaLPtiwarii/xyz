@@ -35,13 +35,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function updateContent(keyword) {
-        showLoadingSpinner();
+        console.log(`Attempting to fetch content for keyword: ${keyword}`);
         try {
-            const response = await fetch(`/api/content?keyword=${encodeURIComponent(keyword)}`);
+            const url = `/api/content?keyword=${encodeURIComponent(keyword)}`;
+            console.log(`Fetching from URL: ${url}`);
+            const response = await fetch(url);
+            console.log(`Response status: ${response.status}`);
             if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`Error response text: ${errorText}`);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const content = await response.json();
+            console.log('Received content:', content);
 
             document.title = `${content.title} - DynamiSearch`;
             resultTitle.textContent = `Your Personalized ${keyword} Solution`;
@@ -53,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resultSection.style.display = 'block';
 
             // Smooth scroll to results
-            resultSection.scrollIntoView({ behavior: 'smooth' });
+            // resultSection.scrollIntoView({ behavior: 'smooth' });
 
         } catch (error) {
             console.error('Error fetching content:', error);
@@ -267,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
 

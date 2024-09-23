@@ -19,18 +19,18 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(compression());
 app.use(bodyParser.json());
+// new
+
 app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-
-})
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Could not connect to MongoDB', err));
-
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1);
+    });
 // Rate Limiter
 const rateLimiter = new RateLimiterMemory({
     points: 10,
@@ -47,6 +47,12 @@ app.use((req, res, next) => {
             res.status(429).send('Too Many Requests');
         });
 });
+
+app.use((req, res, next) => {
+    console.log(`Received ${req.method} request for ${req.url}`);
+    next();
+});
+
 
 // Routes
 app.use('/api/content', contentRoutes);
