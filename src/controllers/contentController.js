@@ -4,10 +4,15 @@ const contentModel = require('../models/contentModel');
 exports.getContent = async (req, res) => {
     try {
         const { keyword } = req.query;
-        console.log('Fetching content for keyword:', keyword); // Add this log
+        console.log('Fetching content for keyword:', keyword);
+
+        if (!keyword) {
+            return res.status(400).json({ error: 'Keyword is required' });
+        }
+
         let content = await Content.findOne({ keyword });
         if (!content) {
-            console.log('Content not found, creating new'); // Add this log
+            console.log('Content not found, creating new');
             content = new Content({
                 keyword,
                 title: `${keyword} Solutions`,
@@ -19,7 +24,7 @@ exports.getContent = async (req, res) => {
         }
         res.json(content);
     } catch (error) {
-        console.error('Error in getContent:', error); // Add this log
+        console.error('Error in getContent:', error);
         res.status(500).json({ error: 'An error occurred', details: error.message });
     }
 };
